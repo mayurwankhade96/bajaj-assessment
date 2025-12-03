@@ -47,7 +47,7 @@ const Form = () => {
 
   return (
     <>
-      <div className="py-4 max-md:px-4 md:pl-35">
+      <div className="h-[calc(100vh-64px)] overflow-y-auto py-4 max-md:px-4 md:pl-35">
         <div className="sm:max-w-132">
           <div className="mb-5 text-[#1a1a1a]">
             <h1 className="text-lg font-medium">Personal information</h1>
