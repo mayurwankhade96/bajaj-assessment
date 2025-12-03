@@ -6,11 +6,17 @@ import Feedback from "./Feedback";
 const Form = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
 
   const formData = JSON.parse(localStorage.getItem("formData"));
 
   const handleResetClick = () => {
-    localStorage.removeItem("formData");
+    setResetLoading(true);
+
+    setTimeout(() => {
+      localStorage.removeItem("formData");
+      setResetLoading(false);
+    });
   };
 
   const onClose = () => {
@@ -178,7 +184,7 @@ const Form = () => {
                 type="reset"
                 onClick={handleResetClick}
               >
-                RESET
+                {resetLoading ? "Loading..." : "RESET"}
               </button>
 
               <button
