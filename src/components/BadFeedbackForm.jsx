@@ -1,18 +1,9 @@
-import { useState } from "react";
 import FeedbackOptionButton from "./FeedbackOptionButton";
 
-const processFeedbackOptions = [
-  { label: "Difficult navigation", isActive: false },
-  { label: "Process is not easy", isActive: false },
-  { label: "Steps are not simple", isActive: false },
-  { label: "Technical issue", isActive: false },
-];
-
-const BadFeedbackForm = () => {
-  const [processFeedbackButtons, setProcessFeedbackButtons] = useState(
-    processFeedbackOptions,
-  );
-
+const BadFeedbackForm = ({
+  processFeedbackButtons,
+  setProcessFeedbackButtons,
+}) => {
   const handleOptionClick = (label) => {
     setProcessFeedbackButtons(
       processFeedbackButtons.map((o) => {

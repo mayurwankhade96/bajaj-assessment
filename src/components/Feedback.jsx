@@ -9,14 +9,44 @@ import { useState } from "react";
 import BadFeedbackForm from "./BadFeedbackForm";
 import GoodFeedback from "./GoodFeedback";
 
+const processFeedbackOptions = [
+  { label: "Difficult navigation", isActive: false },
+  { label: "Process is not easy", isActive: false },
+  { label: "Steps are not simple", isActive: false },
+  { label: "Technical issue", isActive: false },
+];
+
 const Feedback = ({ onClose }) => {
   const [feedback, setFeedback] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [animateIndex, setAnimateIndex] = useState(null);
+  const [step, setStep] = useState("idle");
+  const [processFeedbackButtons, setProcessFeedbackButtons] = useState(
+    processFeedbackOptions,
+  );
 
   const handleCloseClick = () => {
+    setAnimateIndex(null);
+    setStep("idle");
     setIsSubmitted(false);
     setFeedback(null);
     onClose();
+  };
+
+  const handleEmojiClick = (i, feedbackValue) => {
+    setProcessFeedbackButtons(processFeedbackOptions);
+    setFeedback(feedbackValue);
+    setAnimateIndex(i);
+
+    setStep("rotated");
+
+    setTimeout(() => {
+      setStep("straight");
+    }, 1000);
+
+    setTimeout(() => {
+      setStep("bordered");
+    }, 1000);
   };
 
   return (
@@ -37,51 +67,72 @@ const Feedback = ({ onClose }) => {
           </p>
 
           <div className="mb-5 flex gap-x-7">
-            <EmojiButton onClick={() => setFeedback("bad")}>
+            <EmojiButton onClick={() => handleEmojiClick(0, "bad")}>
               <div className="flex flex-col items-center gap-y-2">
-                <WorstIcon />
+                <WorstIcon
+                  className={`rounded-full transition-all duration-300 ${animateIndex === 0 && step === "rotated" ? "rotate-180" : ""} ${animateIndex === 0 && step === "straight" ? "rotate-0" : ""} ${animateIndex === 0 && step === "bordered" ? `rotate-0 border-5 border-[#B40000]` : ""}`}
+                />
                 Worst
               </div>
             </EmojiButton>
 
-            <EmojiButton onClick={() => setFeedback("bad")}>
+            <EmojiButton onClick={() => handleEmojiClick(1, "bad")}>
               <div className="flex flex-col items-center gap-y-2">
                 <div>
-                  <PoorIcon />
+                  <PoorIcon
+                    className={`rounded-full transition-all duration-300 ${animateIndex === 1 && step === "rotated" ? "rotate-180" : ""} ${animateIndex === 1 && step === "straight" ? "rotate-0" : ""} ${animateIndex === 1 && step === "bordered" ? `rotate-0 border-5 border-[#5164C8]` : ""}`}
+                  />
                 </div>
                 Poor
               </div>
             </EmojiButton>
 
-            <EmojiButton onClick={() => setFeedback("bad")}>
+            <EmojiButton onClick={() => handleEmojiClick(2, "bad")}>
               <div className="flex flex-col items-center gap-y-2">
                 <div>
-                  <FairIcon />
+                  <FairIcon
+                    className={`rounded-full transition-all duration-300 ${animateIndex === 2 && step === "rotated" ? "rotate-180" : ""} ${animateIndex === 2 && step === "straight" ? "rotate-0" : ""} ${animateIndex === 2 && step === "bordered" ? `rotate-0 border-5 border-[#FABA0A]` : ""}`}
+                  />
                 </div>
                 Fair
               </div>
             </EmojiButton>
 
-            <EmojiButton onClick={() => setFeedback("good")}>
+            <EmojiButton
+              borderColor="border-[#00B3CC]"
+              onClick={() => handleEmojiClick(3, "good")}
+            >
               <div className="flex flex-col items-center gap-y-2">
                 <div>
-                  <GoodIcon />
+                  <GoodIcon
+                    className={`rounded-full transition-all duration-300 ${animateIndex === 3 && step === "rotated" ? "rotate-180" : ""} ${animateIndex === 3 && step === "straight" ? "rotate-0" : ""} ${animateIndex === 3 && step === "bordered" ? `rotate-0 border-5 border-[#00B3CC]` : ""}`}
+                  />
                 </div>
                 Good
               </div>
             </EmojiButton>
 
-            <EmojiButton onClick={() => setFeedback("good")}>
+            <EmojiButton
+              borderColor="border-[#089E86]"
+              onClick={() => handleEmojiClick(4, "good")}
+            >
               <div className="flex flex-col items-center gap-y-2">
                 <div>
-                  <BestIcon />
+                  <BestIcon
+                    className={`rounded-full transition-all duration-300 ${animateIndex === 4 && step === "rotated" ? "rotate-180" : ""} ${animateIndex === 4 && step === "straight" ? "rotate-0" : ""} ${animateIndex === 4 && step === "bordered" ? `rotate-0 border-5 border-[#089E86]` : ""}`}
+                  />
                 </div>
                 Best
               </div>
             </EmojiButton>
           </div>
 
-          {feedback === "bad" && <BadFeedbackForm />}
+          {feedback === "bad" && (
+            <BadFeedbackForm
+              processFeedbackButtons={processFeedbackButtons}
+              setProcessFeedbackButtons={setProcessFeedbackButtons}
+            />
+          )}
 
           {feedback === "good" && <GoodFeedback />}
 

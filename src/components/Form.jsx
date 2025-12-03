@@ -5,6 +5,7 @@ import Feedback from "./Feedback";
 
 const Form = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const formData = JSON.parse(localStorage.getItem("formData"));
 
@@ -18,6 +19,7 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const formData = new FormData(e.currentTarget);
 
     const name = formData.get("name");
@@ -26,11 +28,15 @@ const Form = () => {
     const mobile = formData.get("mobile");
     const alternateMobile = formData.get("alternateMobile");
 
-    localStorage.setItem(
-      "formData",
-      JSON.stringify({ name, dateOfBirth, email, mobile, alternateMobile }),
-    );
-    setIsOpen(true);
+    setTimeout(() => {
+      localStorage.setItem(
+        "formData",
+        JSON.stringify({ name, dateOfBirth, email, mobile, alternateMobile }),
+      );
+
+      setIsLoading(false);
+      setIsOpen(true);
+    }, 1000);
   };
 
   return (
@@ -175,8 +181,11 @@ const Form = () => {
                 RESET
               </button>
 
-              <button className="cursor-pointer bg-[#002953] px-4 py-2 text-sm font-medium text-white">
-                SUBMIT
+              <button
+                className="cursor-pointer bg-[#002953] px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:bg-[#4A7CB1]"
+                disabled={isLoading}
+              >
+                {isLoading ? "Loading..." : "SUBMIT"}
               </button>
             </div>
           </form>
